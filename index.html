@@ -1,4 +1,4 @@
-html<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -49,7 +49,7 @@ html<!DOCTYPE html>
         .next-btn { margin-top: 25px; width: 100%; padding: 12px; background-color: var(--banner-bg); color: white; border: none; border-radius: 8px; font-weight: bold; display: none; }
     </style>
 </head>
-html<body>
+<body>
     <div class="header-banner">
         <h1>AP7 Week 1 Interactive Reviewer</h1>
         <p>"Sa pag-unawa sa nakaraan, mas malinaw ang landas ng bayan."</p>
@@ -131,7 +131,7 @@ html<body>
             </div>
         </div>
     </div>
-Use code with caution.Hakbang 4: I-paste ang Pangatlong Bahagi (Yung Logic at Tanong Mo)Ito ang huling bloke. Kopyahin ito at i-paste sa pinakadulo ng lahat ng naunang code na nasa editor mo:html    <script>
+    <script>
         const questionBank = {
             day1: [
                 { q: "Ano ang tawag sa patakaran ng sapilitang paglipat ng mga Pilipino sa mga komunidad malapit sa simbahan?", o: ["Polo y servicio", "Reduccion", "Encomienda", "Tributo"], a: 1, e: "Ang Reduccion ang patakarang naglalayong samahin ang mga katutubo sa isang komunidad upang madaling mapamahalaan ng mga prayle." },
@@ -141,93 +141,3 @@ Use code with caution.Hakbang 4: I-paste ang Pangatlong Bahagi (Yung Logic at Ta
                 { q: "Anong rehiyon o pangkat sa Pilipinas ang matagumpay na lumaban at hindi nasakop ng mga Espanyol dahil sa kanilang matinding pagtutol at pagkakaisa?", o: ["Katalugan", "Kabisayaan", "Mga Muslim sa Mindanao at Sulu", "Ilocos"], a: 2, e: "Ang mga Muslim sa Mindanao at Sulu (Sultanato) ay matagumpay na nagpanatili ng kanilang kalayaan laban sa puwersang Espanyol." }
             ],
             day3: [
-                { q: "Ano ang pangunahing layunin ng pagpapadala ng mga Thomasites ng mga Amerikano sa Pilipinas?", o: ["Magturo ng wikang Ingles at pampublikong edukasyon", "Magtayo ng mga kalsada at tulay", "Mangolekta ng buwis sa mga sakahan", "Magpalaganap ng relihiyong Protestantismo sa bansa"], a: 0, e: "Ang Thomasites ang mga unang Amerikanong guro na ipinadala upang magtatag ng libre at pampublikong sistema ng edukasyon gamit ang wikang Ingles." }
-            ],
-            day4: [
-                { q: "Sino ang bayaning Pilipino na nagpatuloy ng pakikipaglaban sa mga Amerikano sa pamamagitan ng gerilya sa Katagalugan matapos madakip si Heneral Emilio Aguinaldo?", o: ["Macario Sakay", "Jose Rizal", "Apolinario Mabini", "Andres Bonifacio"], a: 0, e: "Itinatag ni Macario Sakay ang Republika ng Katagalugan at nagpatuloy ng gerilyang pakikipaglaban sa kabila ng pananakop ng Amerika." }
-            ],
-            day5: [
-                { q: "Alin sa mga sumusunod ang pangunahing pagkakaiba sa layunin ng pananakop ng Espanya kumpara sa Amerika?", o: ["Ang Espanya ay nagtuon sa pagpapalaganap ng Kristiyanismo, habang ang Amerika ay nakatutok sa edukasyon at komersyo", "Pareho silang walang interes sa likas na yaman ng bansa", "Ang Amerika ang nagpalaganap ng Katolisismo sa Pilipinas", "Ang Espanya ay nagbigay agad ng kalayaan sa mga Pilipino"], a: 0, e: "Kristiyanismo at ginto ang pangunahing tuon ng Espanya samantalang Edukasyon, Demokrasya, at Bagong Pamilihan naman ang naging tuon ng Amerika." }
-            ]
-        };
-
-        let currentActiveQuiz = []; let currentQuestionIndex = 0; let runningScore = 0;
-
-        window.onload = function() {
-            const savedName = localStorage.getItem('reviewer_student_name');
-            if (savedName) { document.getElementById('username').value = savedName; }
-        };
-
-        function saveName() {
-            const nameInput = document.getElementById('username').value;
-            localStorage.setItem('reviewer_student_name', nameInput);
-            alert('Pangalan ay matagumpay na nai-save!');
-        }
-
-        function openDashboard() { alert('Dadalhin ka nito sa Parent Dashboard view soon!'); }
-
-        function startQuiz(day, targetItems) {
-            let compiledQuestions = [];
-            if (day === 'mixed') {
-                for (let key in questionBank) { compiledQuestions = compiledQuestions.concat(questionBank[key]); }
-            } else {
-                compiledQuestions = questionBank[day] || [];
-            }
-            if (compiledQuestions.length === 0) {
-                alert("Paumanhin, wala pang katanungan na nakalagay para sa paksang ito."); return;
-            }
-            compiledQuestions.sort(() => 0.5 - Math.random());
-            currentActiveQuiz = compiledQuestions.slice(0, Math.min(targetItems, compiledQuestions.length));
-            currentQuestionIndex = 0; runningScore = 0;
-            document.getElementById("quiz-contents").style.display = "block";
-            document.getElementById("result-contents").style.display = "none";
-            document.getElementById("quizModal").style.display = "flex";
-            renderQuestion();
-        }
-
-        function renderQuestion() {
-            const currentItem = currentActiveQuiz[currentQuestionIndex];
-            document.getElementById("quizProgress").innerText = `Katanungan ${currentQuestionIndex + 1} ng ${currentActiveQuiz.length}`;
-            document.getElementById("quizQuestion").innerText = currentItem.q;
-            document.getElementById("quizExplanation").style.display = "none";
-            document.getElementById("quizNextBtn").style.display = "none";
-            const optionsContainer = document.getElementById("quizOptions");
-            optionsContainer.innerHTML = "";
-            currentItem.o.forEach((option, index) => {
-                const btn = document.createElement("button");
-                btn.className = "option-btn"; btn.innerText = option;
-                btn.onclick = () => selectOption(index, btn);
-                optionsContainer.appendChild(btn);
-            });
-        }
-
-        function selectOption(selectedIndex, clickedBtn) {
-            const currentItem = currentActiveQuiz[currentQuestionIndex];
-            const allOptionButtons = document.querySelectorAll(".option-btn");
-            allOptionButtons.forEach(b => b.disabled = true);
-            if (selectedIndex === currentItem.a) {
-                clickedBtn.classList.add("correct"); runningScore++;
-            } else {
-                clickedBtn.classList.add("incorrect"); allOptionButtons[currentItem.a].classList.add("correct");
-            }
-            const explanationBox = document.getElementById("quizExplanation");
-            explanationBox.innerText = `Paliwanag: ${currentItem.e}`;
-            explanationBox.style.display = "block"; document.getElementById("quizNextBtn").style.display = "block";
-        }
-
-        function goToNextQuestion() {
-            currentQuestionIndex++;
-            if (currentQuestionIndex < currentActiveQuiz.length) { renderQuestion(); } else { displayQuizResults(); }
-        }
-
-        function displayQuizResults() {
-            document.getElementById("quiz-contents").style.display = "none";
-            document.getElementById("result-contents").style.display = "block";
-            const name = localStorage.getItem('reviewer_student_name') || "Mag-aaral";
-            document.getElementById("quizScoreText").innerText = `${name}, nakakuha ka ng ${runningScore} sa kabuuang ${currentActiveQuiz.length}!`;
-        }
-
-        function closeQuiz() { document.getElementById("quizModal").style.display = "none"; }
-    </script>
-</body>
-</html>
